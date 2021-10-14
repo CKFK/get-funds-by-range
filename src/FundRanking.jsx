@@ -11,7 +11,6 @@ const FundRanking = () => {
     const [endDate, setEndDate] = useState(new Date());
     const [fundRankingList, setFundRankingList] = useState([]);
     const [fundRankingListForOrder, setFundRankingListForOrder] = useState([]);
-    const [selectTimeStatus, setSelectTimeStatus] = useState(false);
 
     const getListFundRanking = useCallback(async () => {
         try {
@@ -19,7 +18,6 @@ const FundRanking = () => {
                 axios.get('https://fund-ranking-api.herokuapp.com/getRanking').then((res) => {
                     const data = res.data ? res.data.data : []
                     setFundRankingList(data)
-                    setFundRankingListForOrder(fundRankingListForOrder)
                 })
             }
         } catch (error) {
@@ -36,13 +34,10 @@ const FundRanking = () => {
         });
         setFundRankingListForOrder(newFundRankingList)
     }
-    
 
     useEffect(() => {
-        if(selectTimeStatus){
-            getListFundRanking()
-        }
-    }, [getListFundRanking,selectTimeStatus])
+        getListFundRanking()
+    }, [getListFundRanking])
    
     return (
         <>
@@ -53,7 +48,6 @@ const FundRanking = () => {
                         selected={startDate}
                         onChange={(date) => {
                             setStartDate(date)
-                            setSelectTimeStatus(true)
                             orderFundRanking(date,endDate)
                         }}
                         selectsStart
@@ -67,7 +61,6 @@ const FundRanking = () => {
                         selected={endDate}
                         onChange={(date) => {
                             setEndDate(date)
-                            setSelectTimeStatus(true)
                             orderFundRanking(startDate,date)
                         }}
                         selectsEnd
@@ -83,10 +76,10 @@ const FundRanking = () => {
                         <thead className='text-center'>
                             <tr>
                                 <th width="10%">Rank of fund</th>
-                                <th>Name</th>
-                                <th>Updated date</th>
-                                <th>Performance</th>
-                                <th>Price</th>
+                                <th width="30%">Name</th>
+                                <th width="20%">Updated date</th>
+                                <th width="20%">Performance</th>
+                                <th width="20%">Price</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,8 +88,8 @@ const FundRanking = () => {
                                 <td className='text-center'>{++index}</td>
                                 <td>{item.thailand_fund_code}</td>
                                 <td className='text-center'>{moment(item.nav_date).format('D MMM YYYY')}</td>
-                                <td>{item.nav_return}</td>
-                                <td className='text-right'>{item.nav}</td>
+                                <td align='right'>{item.nav_return}</td>
+                                <td align='right'>{item.nav}</td>
                             </tr>
                         ) : (
                             <tr>

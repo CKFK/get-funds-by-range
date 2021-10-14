@@ -9,18 +9,32 @@
 2. What was the most useful feature that was added to the latest version of your chosen language? Please include a snippet of code that shows how you've used it.
 # Answer I chosen javascript laguage, 
 
-axios.get('https://fund-ranking-api.herokuapp.com/getRanking').then((res) => {
-    const data = res.data ? res.data.data : []
-    setFundRankingList(data)
-    setFundRankingListForOrder(fundRankingListForOrder)
-})
+const getListFundRanking = useCallback(async () => {
+    try {
+        if(fundRankingList.length === 0){
+            axios.get('https://fund-ranking-api.herokuapp.com/getRanking').then((res) => {
+                const data = res.data ? res.data.data : []
+                setFundRankingList(data)
+            })
+        }
+    } catch (error) {
+        console.log(`name ~ error`, error)
+    }
+}, [])
 
-const newFundRankingList = fundRankingList && fundRankingList.filter(item => {
-    let nav_date = new Date(item.nav_date);
-    return nav_date >= startDate && nav_date <= endDate 
-}).sort((a,b) => {
-    return b.nav_return - a.nav_return
-});
+const orderFundRanking = (startDate,endDate) => {
+    const newFundRankingList = fundRankingList && fundRankingList.filter(item => {
+        let nav_date = new Date(item.nav_date);
+        return nav_date >= startDate && nav_date <= endDate 
+    }).sort((a,b) => {
+        return b.nav_return - a.nav_return
+    });
+    setFundRankingListForOrder(newFundRankingList)
+}
+
+useEffect(() => {
+    getListFundRanking()
+}, [getListFundRanking])
 
 # I get data from my backend that uses the API of FINNOMENA APIs and I filter data by start date and end date with nav_date (update date). and step two i sort data Descending from fund performance
 
@@ -29,3 +43,6 @@ const newFundRankingList = fundRankingList && fundRankingList.filter(item => {
 
 4. How would you improve the FINNOMENA APIs that you just used?
 # Answer I will improve it by using the problem you provided, convert to sql script for Query to return data from API so that you don't have to manage data again from client side.
+
+# I deploy my app to heroku if you want to not install my app from git.
+https://fund-ranking.herokuapp.com/
