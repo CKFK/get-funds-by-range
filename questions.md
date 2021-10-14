@@ -22,7 +22,7 @@ const newFundRankingList = fundRankingList && fundRankingList.filter(item => {
     return b.nav_return - a.nav_return
 });
 
-# I get data from FINNOMENA APIs and I filter data by start date and end date with nav_date (update date). and step two i sort data Descending from fund performance
+# I get data from my backend that uses the API of FINNOMENA APIs and I filter data by start date and end date with nav_date (update date). and step two i sort data Descending from fund performance
 
 3. How would you track down a performance issue in production? Have you ever had to do this?
 # Answer Find the log and fix it and find a way to make the system as efficient as possible., No because most of senior web develop will do this part.
